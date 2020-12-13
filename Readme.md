@@ -94,17 +94,18 @@ Submission deadline: 17.01.2021, 23:59
 
 ### Dependency Chart of Tests
   This is how the tests (and thus the achievable marks) depend on the features from above:
-    | Test Name                           |   Marks    |   Depends on        |
-    | -----------------                   | -------    | --------            |
-    | "Simple expressions"                |  (2)       | epr-2               |
-    | "Random expressions"                |  (1)       | epr-4               |
-    | "Random commands (no indentation)"  |  (1)       | epr-4, cpr-1        |
-    | "Random commands (with indentation)"|  (1)       | epr-4, cpr-2        |
-    |                                     |            |                     |
-    |"parse simple exp"                   |  (2)       | epa-1               |
-    |"parse simple com"                   |  (1)       | epa-1, cpa, epr-1   |
-    |"parse-pretty-inv (exp)"             |  (1)       | epr-4, epa-3        |
-    |"parse-pretty-inv (com)"             |  (1)       | cpa, epr-4, epa-3   |
+
+  | Test Name                           |   Marks    |   Depends on        |
+  | -----------------                   | -------    | --------            |
+  | "Simple expressions"                |  (2)       | epr-2               |
+  | "Random expressions"                |  (1)       | epr-4               |
+  | "Random commands (no indentation)"  |  (1)       | epr-4, cpr-1        |
+  | "Random commands (with indentation)"|  (1)       | epr-4, cpr-2        |
+  |                                     |            |                     |
+  |"parse simple exp"                   |  (2)       | epa-1               |
+  |"parse simple com"                   |  (1)       | epa-1, cpa, epr-1   |
+  |"parse-pretty-inv (exp)"             |  (1)       | epr-4, epa-3        |
+  |"parse-pretty-inv (com)"             |  (1)       | cpa, epr-4, epa-3   |
 
 
 
@@ -237,7 +238,7 @@ Otherwise, the score is split 5-5 between pretty-printing and parsing.
   * correctly implementing the indentation rules is worth 1 point. If you struggle with them, just separate every token by a single space,
   and you can still achieve 9/10
 
-## Remarks for Tutors
+## Remarks for Markers (TAs)
 
 (intentionally included in here)
 
