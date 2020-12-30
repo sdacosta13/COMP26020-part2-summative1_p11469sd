@@ -85,8 +85,8 @@ module Pretty (prettyExp, prettyCom) where
 import While
 
 {- Add your import declarations here! -}
-
-
+import PrettyHelp
+{-
 prettyExp :: Exp -> String
 prettyExp e = ""   -- replace this line by your solution
 
@@ -94,3 +94,50 @@ prettyExp e = ""   -- replace this line by your solution
 prettyCom :: Com -> String
 
 prettyCom c = ""   -- replace this line by your solution
+-}
+
+
+--prettyExp needs parenthesis on the left to be complete
+--(epr-4) operators associate to the left, so omit parenthesis in the "(a+b)+c" - case, but still print them for "a+(b+c)"
+
+exp1 = Binop (Plus) (Var "X") (Const 2)
+exp2 = Uminus exp1
+exp3 = Const 42
+exp4 = Binop Times (Binop Plus (Var "a") (Var "b")) (Var "c")
+prettyExp :: Exp -> String
+prettyExp e = pr False e
+
+pr :: Bool -> Exp -> String
+pr True (Binop Plus exp1 exp2) = "(" ++ pr False exp1 ++ "+" ++ pr False exp2 ++ ")"
+pr False (Binop Plus exp1 exp2) = pr False exp1 ++ "+" ++ pr False exp2
+pr _ (Binop Times exp1 exp2) = pr True exp1 ++ "*" ++ pr True exp2
+pr _ (Binop op exp1 exp2) = pr False exp1 ++ binToString op ++ pr False exp2
+pr _ (Uminus (Var v)) = "-" ++ v
+pr _ (Var v) = v
+pr _ (Uminus (Const c)) = "-" ++ show c
+pr _ (Const c) = show c
+pr _ (Uminus u) = "-(" ++ pr False u ++ ")"
+
+
+
+prettyCom :: Com -> String
+
+prettyCom c = ""   -- replace this line by your solution
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--
