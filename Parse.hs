@@ -15,15 +15,28 @@
 module Parse (parseExp,parseCom) where
 import While
 
+
 {- Add your import declarations here -}
+import PComb
+import Control.Monad(liftM,ap,liftM2,guard)
+import Control.Applicative( empty, (<|>), Alternative )
+import Data.Char(isDigit,isLetter,isSpace)
 
-
+{-
 parseExp :: String -> Maybe Exp
 parseExp s = Nothing   -- replace this line by your solution
 
 parseCom :: String -> Maybe Com
 parseCom s = Nothing   -- replace this line by your solution
+-}
+parseExp :: String -> Maybe Exp
+parseExp s = Nothing
 
 
 
+parseCom :: String -> Maybe Com
+parseCom s = Nothing
 
+
+
+ts = "34"

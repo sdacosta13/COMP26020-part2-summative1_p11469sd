@@ -103,32 +103,53 @@ prettyCom c = ""   -- replace this line by your solution
 exp1 = Binop (Plus) (Var "X") (Const 2)
 exp2 = Uminus exp1
 exp3 = Const 42
-exp4 = Binop Times (Binop Plus (Var "a") (Var "b")) (Var "c")
+exp4 = Binop Times (Binop Plus (Var "a") (Binop Plus (Var "b") (Var "d"))) (Var "c")
+exp5 = Binop Times (Binop Plus (Var "a") (Var "b")) (Var "c")
+
 prettyExp :: Exp -> String
-prettyExp e = pr False e
+prettyExp e = pr 0 e
 
-pr :: Bool -> Exp -> String
-pr True (Binop Plus exp1 exp2) = "(" ++ pr False exp1 ++ "+" ++ pr False exp2 ++ ")"
-pr False (Binop Plus exp1 exp2) = pr False exp1 ++ "+" ++ pr False exp2
-pr _ (Binop Times exp1 exp2) = pr True exp1 ++ "*" ++ pr True exp2
-pr _ (Binop op exp1 exp2) = pr False exp1 ++ binToString op ++ pr False exp2
-pr _ (Uminus (Var v)) = "-" ++ v
-pr _ (Var v) = v
-pr _ (Uminus (Const c)) = "-" ++ show c
-pr _ (Const c) = show c
-pr _ (Uminus u) = "-(" ++ pr False u ++ ")"
+pr :: Integer -> Exp -> String
+pr upperPrec (Binop op exp1 exp2) | (upperPrec >= pGet op) = "(" ++ pr (pGet op) exp1 ++ binToString op ++ pr (pGet op) exp2 ++ ")"
+                                  | (upperPrec < pGet op) = pr (pGet op) exp1 ++ binToString op ++ pr (pGet op) exp2 --ommit parenthesis
+pr upperPrec (Uminus (Var v)) = "-" ++ v
+pr upperPrec (Var v) = v
+pr upperPrec (Const c) = show c
+pr upperPrec (Uminus u) = "-" ++ pr 10 u
 
 
+test_simple_com_pairs = [
+  ("{}",Seq []), --- Error Maybe?
+  ("{ }",Seq []),
+  ("x=1",Assign "x" (Const 1)),
+  ("if b then x=1 else x=2",If (Var "b") (Assign "x" (Const 1)) (Assign "x" (Const 2))),
+  ("{ x=1; y=2 }",Seq [Assign "x" (Const 1),Assign "y" (Const 2)]),
+  ("{ x=1 }",Seq [Assign "x" (Const 1)]),
+  ("while a do {a=a-1; b=b+b}",While (Var "a") (Seq [Assign "a" (Binop Minus (Var "a") (Const 1)),Assign "b" (Binop Plus (Var "b") (Var "b"))]))
+  ]
+exp11 = While (Var "a") (Seq [Assign "a" (Binop Minus (Var "a") (Const 1)),Assign "b" (Binop Plus (Var "b") (Var "b"))])
+exp12 = Seq [Assign "x" (Const 1)]
+exp13 = Seq [Assign "x" (Const 1),Assign "y" (Const 2)]
+exp14 = If (Var "b") (Assign "x" (Const 1)) (Assign "x" (Const 2))
 
 prettyCom :: Com -> String
 
-prettyCom c = ""   -- replace this line by your solution
+prettyCom (Seq []) = "{}"
+
+prettyCom (Assign name ex) = name ++ "=" ++ prettyExp ex
+
+prettyCom (Seq cmds) = "{" ++ prettySeq cmds ++ "}"
+
+prettyCom (If ex cmd1 cmd2) = "if " ++ prettyExp ex ++ " then " ++ prettyCom cmd1 ++ " else " ++ prettyCom cmd2
+prettyCom (While ex cmd) = "while " ++ prettyExp ex ++ " do " ++ prettyCom cmd
 
 
 
 
-
-
+prettySeq :: [Com] -> String
+prettySeq [] = ""
+prettySeq (cmd:cmds) | cmds /= [] = prettyCom cmd ++ "; "++ prettySeq cmds
+                     | otherwise = prettyCom cmd
 
 
 

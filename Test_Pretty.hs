@@ -85,4 +85,3 @@ norm1 = norm_tks . map spc where
 
 -- Normalize spacing in between tokens, keep indentation
 norm2 = gen_norm (norm_line_indent norm_tks)
-

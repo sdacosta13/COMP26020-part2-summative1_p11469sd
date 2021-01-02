@@ -22,5 +22,3 @@ data Com =
     | If Exp Com Com
     | While Exp Com
   deriving (Show,Eq)
-
-
