@@ -107,15 +107,30 @@ exp4 = Binop Times (Binop Plus (Var "a") (Binop Plus (Var "b") (Var "d"))) (Var 
 exp5 = Binop Times (Binop Plus (Var "a") (Var "b")) (Var "c")
 
 prettyExp :: Exp -> String
-prettyExp e = pr 0 e
+prettyExp e = pr 0 False e
 
-pr :: Integer -> Exp -> String
-pr upperPrec (Binop op exp1 exp2) | (upperPrec >= pGet op) = "(" ++ pr (pGet op) exp1 ++ binToString op ++ pr (pGet op) exp2 ++ ")"
-                                  | (upperPrec < pGet op) = pr (pGet op) exp1 ++ binToString op ++ pr (pGet op) exp2 --ommit parenthesis
-pr upperPrec (Uminus (Var v)) = "-" ++ v
-pr upperPrec (Var v) = v
-pr upperPrec (Const c) = show c
-pr upperPrec (Uminus u) = "-" ++ pr 10 u
+pr :: Integer -> Bool-> Exp -> String
+-- side == left is false side == right is true
+pr upperPrec side (Binop op exp1 exp2) | (upperPrec > pGet op) = "(" ++ pr (pGet op) False exp1 ++ binToString op ++ pr (pGet op) True exp2 ++ ")"
+                                       | (upperPrec == pGet op) && side = "(" ++ pr (pGet op) False exp1 ++ binToString op ++ pr (pGet op) True exp2 ++ ")"
+                                       | (upperPrec == pGet op) = pr (pGet op) False exp1 ++ binToString op ++ pr (pGet op) True exp2
+                                       | (upperPrec < pGet op) = pr (pGet op) False exp1 ++ binToString op ++ pr (pGet op) True exp2 --ommit parenthesis
+
+pr upperPrec side (Uminus (Const c)) = "-(" ++ show c ++ ")"
+pr upperPrec side (Uminus (Var v)) = "-"++v
+pr upperPrec side (Uminus x) = "-(" ++ pr 0 False x  ++ ")"
+{-
+pr upperPrec side (Uminus (Uminus x)) = "-(-(" ++ pr upperPrec False x ++ "))"
+
+pr upperPrec side (Uminus (Const c)) | (upperPrec == 10) = "(-(" ++ show c ++ "))"
+                                     | otherwise = "-(" ++ show c ++ ")"
+
+pr upperPrec side (Uminus u) | (upperPrec == 10) = "-(" ++ pr 10 side u ++ ")"
+                             | otherwise = "-" ++ pr 10 side u
+-}
+pr upperPrec side (Var v) = v
+pr upperPrec side (Const c) = show c
+
 
 
 test_simple_com_pairs = [
