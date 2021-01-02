@@ -63,10 +63,9 @@ test4 vrb = do_test vrb test4_data
 main vrb = do
   r1 <- test1 vrb
   r2 <- test2 vrb
-  --r3 <- test3 vrb
-  --r4 <- test4 vrb
-  return (r1+r2)
-  --return (max 0 (r1+r2+r3+r4))
+  r3 <- test3 vrb
+  r4 <- test4 vrb
+  return (max 0 (r1+r2+r3+r4))
 
 
 {- Auxiliary functions -}
