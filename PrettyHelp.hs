@@ -24,3 +24,7 @@ pGet Less = 2
 pGet LessEq = 2
 pGet And = 1
 pGet Or = 0
+
+getTabs :: Int -> String
+
+getTabs x = concat (replicate x "  ")

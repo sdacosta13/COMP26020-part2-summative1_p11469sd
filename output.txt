@@ -1,6 +1,8 @@
 Preprocessing executable 'summative' for summative-0.1.0.0..
 Building executable 'summative' for summative-0.1.0.0..
-[ 9 of 11] Compiling Test_Pretty      ( Test_Pretty.hs, dist/build/summative/summative-tmp/Test_Pretty.o )
+[ 8 of 11] Compiling Pretty           ( Pretty.hs, dist/build/summative/summative-tmp/Pretty.o )
+[ 9 of 11] Compiling Test_Pretty      ( Test_Pretty.hs, dist/build/summative/summative-tmp/Test_Pretty.o ) [Pretty changed]
+[10 of 11] Compiling Test_Parse       ( Test_Parse.hs, dist/build/summative/summative-tmp/Test_Parse.o ) [Pretty changed]
 [11 of 11] Compiling Main             ( Main.hs, dist/build/summative/summative-tmp/Main.o ) [Test_Pretty changed]
 Linking dist/build/summative/summative ...
 Running summative...
