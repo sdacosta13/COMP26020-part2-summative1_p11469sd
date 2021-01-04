@@ -96,8 +96,3 @@ sepBy1 :: Parser a -> Parser b -> Parser [a]
 sepBy1 p sep = liftM2 (:) p (many (sep *> p))
 
 sepBy p sep = sepBy1 p sep <|> return []
-
-
-
-
-

@@ -122,15 +122,24 @@ newline line = "\n" ++ getTabs line
 
 prettyCom :: Com -> String
 prettyCom program = prettyComHelper 0 program
+
+prettyComNewLine tabs (Seq []) = "{ }"
+prettyComNewLine tabs (Seq x) = prettyComHelper tabs (Seq x)
+prettyComNewLine tabs cmd = newline tabs ++ prettyComHelper tabs cmd
+
+
 prettyComHelper :: Int -> Com -> String
-
-prettyComHelper tabs (Seq []) = "{}"
-
+prettyComHelper tabs (Seq []) = "{ }"
 prettyComHelper tabs (Assign name ex) = name ++ "=" ++ prettyExp ex
-
 prettyComHelper tabs (Seq cmds) = "{" ++ prettySeq tabs cmds ++ "}"
 
-prettyComHelper tabs (If ex cmd1 cmd2) = "if " ++ prettyExp ex ++ " then " ++ prettyComHelper tabs cmd1 ++ " else " ++ prettyComHelper tabs cmd2
+prettyComHelper tabs (If ex1 cmd1 (If ex2 cmd2 cmd3)) = "if " ++ prettyExp ex1 ++ " then "
+                                                        ++ prettyComNewLine tabs cmd1 ++ " else if " ++ prettyExp ex2 ++ " then "
+                                                        ++ prettyComNewLine tabs cmd2 ++ " else "
+                                                        ++ prettyComNewLine tabs cmd3
+prettyComHelper tabs (If ex cmd1 cmd2) = "if " ++ prettyExp ex ++ " then "
+                                          ++ prettyComNewLine tabs cmd1 ++ " else "
+                                          ++ prettyComNewLine tabs cmd2
 prettyComHelper tabs (While ex cmd) = "while " ++ prettyExp ex ++ " do " ++ prettyComHelper tabs cmd
 
 

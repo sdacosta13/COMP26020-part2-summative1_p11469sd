@@ -98,6 +98,5 @@ test4 = doQcTest "parse-pretty-inv (exp)" 1 (prop_parse_pretty_inv parseExp pret
 test5 = doQcTest "parse-pretty-inv (com)" 1 (prop_parse_pretty_inv parseCom prettyCom)
 
 main vrb = do
-  --r <- sum <$> sequence [test1 vrb, test2 vrb, test3 vrb, test4, test5]
-  --return $ max r 0
-  return 0
+  r <- sum <$> sequence [test1 vrb, test2 vrb, test3 vrb, test4, test5]
+  return $ max r 0
