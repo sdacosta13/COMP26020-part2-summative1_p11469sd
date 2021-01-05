@@ -1,70 +1,17 @@
 Preprocessing executable 'summative' for summative-0.1.0.0..
 Building executable 'summative' for summative-0.1.0.0..
-[ 8 of 11] Compiling Parse            ( Parse.hs, dist/build/summative/summative-tmp/Parse.o )
+[ 7 of 10] Compiling Parse            ( Parse.hs, dist/build/summative/summative-tmp/Parse.o )
 Linking dist/build/summative/summative ...
 Running summative...
 OK ### 2 Simple expressions
 OK ### 1 Random expressions
 OK ### 1 Random commands (no indentation)
 FAIL ### -1 No parse test
-String 'a < = b' should not parse, but was parsed to: Var "a"
 String 'a = = b' should not parse, but was parsed to: Var "a"
 String 'a & & b' should not parse, but was parsed to: Var "a"
 String 'a | | b' should not parse, but was parsed to: Var "a"
-String '0x' should not parse, but was parsed to: Const 0
 
-FAIL parse simple exp
-'x+1' should parse as Binop Plus (Var "x") (Const 1) but parsed as Just (Var "x")
-'x*2' should parse as Binop Times (Var "x") (Const 2) but parsed as Just (Var "x")
-'a+b*c' should parse as Binop Plus (Var "a") (Binop Times (Var "b") (Var "c")) but parsed as Just (Var "a")
-'(a+b)*c' should parse as Binop Times (Binop Plus (Var "a") (Var "b")) (Var "c") but parsed as Nothing
-'a+b <= c*d' should parse as Binop LessEq (Binop Plus (Var "a") (Var "b")) (Binop Times (Var "c") (Var "d")) but parsed as Just (Var "a")
-'x + 1' should parse as Binop Plus (Var "x") (Const 1) but parsed as Just (Var "x")
-'x * 2' should parse as Binop Times (Var "x") (Const 2) but parsed as Just (Var "x")
-'a + b * c' should parse as Binop Plus (Var "a") (Binop Times (Var "b") (Var "c")) but parsed as Just (Var "a")
-'( a + b ) * c' should parse as Binop Times (Binop Plus (Var "a") (Var "b")) (Var "c") but parsed as Nothing
-'a + b <= c * d' should parse as Binop LessEq (Binop Plus (Var "a") (Var "b")) (Binop Times (Var "c") (Var "d")) but parsed as Just (Var "a")
-' 
- 
- x+1
-
-   
-' should parse as Binop Plus (Var "x") (Const 1) but parsed as Just (Var "x")
-' 
- 
- x*2
-
-   
-' should parse as Binop Times (Var "x") (Const 2) but parsed as Just (Var "x")
-' 
- 
- a+b*c
-
-   
-' should parse as Binop Plus (Var "a") (Binop Times (Var "b") (Var "c")) but parsed as Just (Var "a")
-' 
- 
- (a+b)*c
-
-   
-' should parse as Binop Times (Binop Plus (Var "a") (Var "b")) (Var "c") but parsed as Nothing
-' 
- 
- a+b <= c*d
-
-   
-' should parse as Binop LessEq (Binop Plus (Var "a") (Var "b")) (Binop Times (Var "c") (Var "d")) but parsed as Just (Var "a")
-'x   +   1' should parse as Binop Plus (Var "x") (Const 1) but parsed as Just (Var "x")
-'x   *   2' should parse as Binop Times (Var "x") (Const 2) but parsed as Just (Var "x")
-'a   +   b   *   c' should parse as Binop Plus (Var "a") (Binop Times (Var "b") (Var "c")) but parsed as Just (Var "a")
-'(   a   +   b   )   *   c' should parse as Binop Times (Binop Plus (Var "a") (Var "b")) (Var "c") but parsed as Nothing
-'a   +   b   <=   c   *   d' should parse as Binop LessEq (Binop Plus (Var "a") (Var "b")) (Binop Times (Var "c") (Var "d")) but parsed as Just (Var "a")
-'x + 1' should parse as Binop Plus (Var "x") (Const 1) but parsed as Just (Var "x")
-'x* 2' should parse as Binop Times (Var "x") (Const 2) but parsed as Just (Var "x")
-'a + b* c' should parse as Binop Plus (Var "a") (Binop Times (Var "b") (Var "c")) but parsed as Just (Var "a")
-'( a + b)* c' should parse as Binop Times (Binop Plus (Var "a") (Var "b")) (Var "c") but parsed as Nothing
-'a + b <= c* d' should parse as Binop LessEq (Binop Plus (Var "a") (Var "b")) (Binop Times (Var "c") (Var "d")) but parsed as Just (Var "a")
-
+OK ### 2 parse simple exp
 FAIL parse simple com
 '{}' should parse as Seq [] but parsed as Nothing
 '{ }' should parse as Seq [] but parsed as Nothing
@@ -137,10 +84,10 @@ FAIL parse simple com
 '{ x = 1}' should parse as Seq [Assign "x" (Const 1)] but parsed as Nothing
 'while a do{ a = a-1; b = b + b}' should parse as While (Var "a") (Seq [Assign "a" (Binop Minus (Var "a") (Const 1)),Assign "b" (Binop Plus (Var "b") (Var "b"))]) but parsed as Nothing
 
-*** Failed! Falsified (after 3 tests):
-Binop Equal (Const 1) (Const 1)
+*** Failed! Exception: 'Maybe.fromJust: Nothing' (after 3 tests):
+Uminus (Binop And (Var "z") (Const (-1)))
 FAIL parse-pretty-inv (exp)
 *** Failed! Exception: 'Maybe.fromJust: Nothing' (after 1 test):
 Seq []
 FAIL parse-pretty-inv (com)
-TOTAL ### 4
+TOTAL ### 5

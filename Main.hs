@@ -15,3 +15,4 @@ main = do
   printTotalScore (r1+r2)
 
   return ()
+

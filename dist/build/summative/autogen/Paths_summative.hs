@@ -30,7 +30,7 @@ version = Version [0,1,0,0] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
 bindir     = "/home/sam/.cabal/bin"
-libdir     = "/home/sam/.cabal/lib/x86_64-linux-ghc-8.6.5/summative-0.1.0.0-3dhI9IiZ9okGrsg5afy4K7-summative"
+libdir     = "/home/sam/.cabal/lib/x86_64-linux-ghc-8.6.5/summative-0.1.0.0-3dhI9IiZ9okGrsg5afy4K7"
 dynlibdir  = "/home/sam/.cabal/lib/x86_64-linux-ghc-8.6.5"
 datadir    = "/home/sam/.cabal/share/x86_64-linux-ghc-8.6.5/summative-0.1.0.0"
 libexecdir = "/home/sam/.cabal/libexec/x86_64-linux-ghc-8.6.5/summative-0.1.0.0"

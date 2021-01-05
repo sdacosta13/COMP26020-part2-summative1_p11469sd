@@ -100,3 +100,11 @@ test5 = doQcTest "parse-pretty-inv (com)" 1 (prop_parse_pretty_inv parseCom pret
 main vrb = do
   r <- sum <$> sequence [test1 vrb, test2 vrb, test3 vrb, test4, test5]
   return $ max r 0
+
+
+
+
+
+
+
+

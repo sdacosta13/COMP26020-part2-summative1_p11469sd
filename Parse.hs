@@ -15,76 +15,87 @@
 module Parse (parseExp,parseCom) where
 import While
 
-
 {- Add your import declarations here -}
-import PComb
-import Control.Monad(liftM,ap,liftM2,guard)
-import Control.Applicative( empty, (<|>), Alternative )
-import Data.Char(isDigit,isLetter,isSpace)
-
-
-parseNumber :: String -> Maybe(Exp, String)
-parseNumber x = do
-  (number, remainder) <- parse number x
-  return ((Const number), remainder)
-
-parseVar :: String -> Maybe(Exp, String)
-parseVar x = do
-  (var, remainder) <- parse ident x
-  return ((Var var), remainder)
-
-parseBinop :: String -> Maybe(Exp, String)
-parseBinop s = do
-  (num1, rem1) <- parse number s 
-  (op1, rem2) <- parse item rem1
-  if((stringToBin [op1]) /= Nothing)
-    then do
-      (num2, rem3) <- parse number rem2
-      return ((Binop (stringToBinM [op1]) (Const num1) (Const num2)), rem3)
-    else do
-      (op2, rem3) <- parse item rem2
-      if(stringToBin ([op1]++[op2]) /= Nothing)
-        then do
-          (num2, rem4) <- parse number rem3
-          return ((Binop (stringToBinM ([op1]++[op2])) (Const num1) (Const num2)),rem4)
-        else do
-          empty
-
-
-
-stringToBin :: String -> Maybe Binop
-stringToBin "==" = Just(Equal)
-stringToBin "+" = Just(Plus)
-stringToBin "-" = Just(Minus)
-stringToBin "*" = Just(Times)
-stringToBin "/" = Just(Div)
-stringToBin "<" = Just(Less)
-stringToBin "<=" = Just(LessEq)
-stringToBin "&&" = Just(And)
-stringToBin "||" = Just(Or)
-stringToBin x = Nothing
-
-stringToBinM :: String -> Binop
-stringToBinM "==" = Equal
-stringToBinM "+" = Plus
-stringToBinM "-" = Minus
-stringToBinM "*" = Times
-stringToBinM "/" = Div
-stringToBinM "<" = Less
-stringToBinM "<=" = LessEq
-stringToBinM "&&" = And
-stringToBinM "||" = Or
-
-
+import Control.Applicative(empty)
+import Text.ParserCombinators.Parsec.Language
+import qualified Text.ParserCombinators.Parsec.Token as Token
+import Control.Monad
+import Text.ParserCombinators.Parsec
+import Text.ParserCombinators.Parsec.Expr
+import Data.Maybe
+{-
 parseExp :: String -> Maybe Exp
-parseExp x = do
-  ex <- parseNumber x <|> parseVar x
-  return (fst ex)
+parseExp str = do
+  result <- parse parseExpression "" str
+  if(result == ParseError)
+    then return Nothing
+    else return result
+-}
+
 
 
 parseCom :: String -> Maybe Com
-parseCom s = Nothing
+parseCom s = Nothing   -- replace this line by your solution
+
+languageDef =
+  emptyDef { Token.identStart = letter <|> char '_'
+           , Token.identLetter = letter <|> alphaNum <|> char '_'
+           , Token.reservedNames = ["if",
+                                    "else",
+                                    "while",
+                                    "do"
+                                    ]
+           , Token.reservedOpNames = ["+", "-", "/", "*", "==", "<", "<=", "&&", "||"]
+           }
+lexer      = Token.makeTokenParser languageDef
+identifier = Token.identifier lexer
+reserved   = Token.reserved lexer
+reservedOp = Token.reservedOp lexer
+parens     = Token.parens lexer
+integer    = Token.integer lexer
+semi       = Token.semi lexer
+whitespace = Token.whiteSpace lexer
+
+
+parseExpression :: Parser Exp
+parseExpression = buildExpressionParser ops term -- need to declare ops and term
+
+ops = [
+  [Prefix (reservedOp "-" >> return (Uminus))],
+  [Infix (reservedOp "*" >> return (Binop Times)) AssocLeft, Infix (reservedOp "/" >> return (Binop Div)) AssocLeft],
+  [Infix (reservedOp "+" >> return (Binop Plus )) AssocLeft, Infix (reservedOp "-" >> return (Binop Minus)) AssocLeft],
+  [Infix (reservedOp "==" >> return (Binop Equal )) AssocLeft, Infix (reservedOp "<" >> return (Binop Less)) AssocLeft, Infix (reservedOp "<=" >> return (Binop LessEq)) AssocLeft],
+  [Infix (reservedOp "&&" >> return (Binop And )) AssocLeft],
+  [Infix (reservedOp "||" >> return (Binop Or )) AssocLeft]
+  ]
+{-
+binopParser = do
+  operand1 <- parseExpression
+  operation <- reservedOp
+  operand2 <- parseExpression
+  return $ Binop operation operand1 operand2
+-}
+term = parens parseExpression <|> liftM Var identifier <|> liftM Const integer
+
+removeInitialWhiteSpace :: String -> String
+removeInitialWhiteSpace (s:xs) | s == ' ' = removeInitialWhiteSpace xs
+removeInitialWhiteSpace (s:xs) | s == '\n' = removeInitialWhiteSpace xs
+removeInitialWhiteSpace (s:xs) | s == '\t' = removeInitialWhiteSpace xs
+removeInitialWhiteSpace x = x
+
+parseExp :: String -> Maybe Exp
+parseExp str = do
+  let str2 = removeInitialWhiteSpace str
+  case parse parseExpression "" str2 of
+    Left x -> Nothing
+    Right x -> Just x
 
 
 
-ts = "34"
+
+
+
+
+
+
+--

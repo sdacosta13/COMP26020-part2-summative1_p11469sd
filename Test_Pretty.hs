@@ -66,7 +66,6 @@ main vrb = do
   r3 <- test3 vrb
   --r4 <- test4 vrb
   return (max 0 (r1+r2+r3))
-  --return (max 0 (r1+r2+r3+r4))
 
 
 {- Auxiliary functions -}

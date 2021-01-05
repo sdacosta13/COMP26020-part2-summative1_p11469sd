@@ -44,6 +44,17 @@
   (major1) == 9 && (major2) == 2 && (minor) <= 0)
 #endif /* MIN_VERSION_hxt_regex_xmlschema */
 
+/* package parsec-3.1.13.0 */
+#ifndef VERSION_parsec
+#define VERSION_parsec "3.1.13.0"
+#endif /* VERSION_parsec */
+#ifndef MIN_VERSION_parsec
+#define MIN_VERSION_parsec(major1,major2,minor) (\
+  (major1) <  3 || \
+  (major1) == 3 && (major2) <  1 || \
+  (major1) == 3 && (major2) == 1 && (minor) <= 13)
+#endif /* MIN_VERSION_parsec */
+
 /* tool alex-3.2.4 */
 #ifndef TOOL_VERSION_alex
 #define TOOL_VERSION_alex "3.2.4"
