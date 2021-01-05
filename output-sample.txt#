@@ -1,0 +1,94 @@
+Preprocessing executable 'summative' for summative-0.1.0.0..
+Building executable 'summative' for summative-0.1.0.0..
+[ 7 of 10] Compiling Parse            ( Parse.hs, dist/build/summative/summative-tmp/Parse.o )
+[ 9 of 10] Compiling Test_Parse       ( Test_Parse.hs, dist/build/summative/summative-tmp/Test_Parse.o ) [Parse changed]
+Linking dist/build/summative/summative ...
+Running summative...
+OK ### 2 Simple expressions
+OK ### 1 Random expressions
+OK ### 1 Random commands (no indentation)
+FAIL ### -1 No parse test
+String 'a = = b' should not parse, but was parsed to: Var "a"
+String 'a & & b' should not parse, but was parsed to: Var "a"
+String 'a | | b' should not parse, but was parsed to: Var "a"
+
+OK ### 2 parse simple exp
+FAIL parse simple com
+'{}' should parse as Seq [] but parsed as Nothing
+'{ }' should parse as Seq [] but parsed as Nothing
+'x=1' should parse as Assign "x" (Const 1) but parsed as Nothing
+'if b then x=1 else x=2' should parse as If (Var "b") (Assign "x" (Const 1)) (Assign "x" (Const 2)) but parsed as Nothing
+'{ x=1; y=2 }' should parse as Seq [Assign "x" (Const 1),Assign "y" (Const 2)] but parsed as Nothing
+'{ x=1 }' should parse as Seq [Assign "x" (Const 1)] but parsed as Nothing
+'while a do {a=a-1; b=b+b}' should parse as While (Var "a") (Seq [Assign "a" (Binop Minus (Var "a") (Const 1)),Assign "b" (Binop Plus (Var "b") (Var "b"))]) but parsed as Nothing
+'{ }' should parse as Seq [] but parsed as Nothing
+'{ }' should parse as Seq [] but parsed as Nothing
+'x = 1' should parse as Assign "x" (Const 1) but parsed as Nothing
+'if b then x = 1 else x = 2' should parse as If (Var "b") (Assign "x" (Const 1)) (Assign "x" (Const 2)) but parsed as Nothing
+'{ x = 1 ; y = 2 }' should parse as Seq [Assign "x" (Const 1),Assign "y" (Const 2)] but parsed as Nothing
+'{ x = 1 }' should parse as Seq [Assign "x" (Const 1)] but parsed as Nothing
+'while a do { a = a -1 ; b = b + b }' should parse as While (Var "a") (Seq [Assign "a" (Binop Minus (Var "a") (Const 1)),Assign "b" (Binop Plus (Var "b") (Var "b"))]) but parsed as Nothing
+' 
+ 
+ {}
+
+   
+' should parse as Seq [] but parsed as Nothing
+' 
+ 
+ { }
+
+   
+' should parse as Seq [] but parsed as Nothing
+' 
+ 
+ x=1
+
+   
+' should parse as Assign "x" (Const 1) but parsed as Nothing
+' 
+ 
+ if b then x=1 else x=2
+
+   
+' should parse as If (Var "b") (Assign "x" (Const 1)) (Assign "x" (Const 2)) but parsed as Nothing
+' 
+ 
+ { x=1; y=2 }
+
+   
+' should parse as Seq [Assign "x" (Const 1),Assign "y" (Const 2)] but parsed as Nothing
+' 
+ 
+ { x=1 }
+
+   
+' should parse as Seq [Assign "x" (Const 1)] but parsed as Nothing
+' 
+ 
+ while a do {a=a-1; b=b+b}
+
+   
+' should parse as While (Var "a") (Seq [Assign "a" (Binop Minus (Var "a") (Const 1)),Assign "b" (Binop Plus (Var "b") (Var "b"))]) but parsed as Nothing
+'{   }' should parse as Seq [] but parsed as Nothing
+'{   }' should parse as Seq [] but parsed as Nothing
+'x   =   1' should parse as Assign "x" (Const 1) but parsed as Nothing
+'if   b   then   x   =   1   else   x   =   2' should parse as If (Var "b") (Assign "x" (Const 1)) (Assign "x" (Const 2)) but parsed as Nothing
+'{   x   =   1   ;   y   =   2   }' should parse as Seq [Assign "x" (Const 1),Assign "y" (Const 2)] but parsed as Nothing
+'{   x   =   1   }' should parse as Seq [Assign "x" (Const 1)] but parsed as Nothing
+'while   a   do   {   a   =   a   -1   ;   b   =   b   +   b   }' should parse as While (Var "a") (Seq [Assign "a" (Binop Minus (Var "a") (Const 1)),Assign "b" (Binop Plus (Var "b") (Var "b"))]) but parsed as Nothing
+'{}' should parse as Seq [] but parsed as Nothing
+'{}' should parse as Seq [] but parsed as Nothing
+'x = 1' should parse as Assign "x" (Const 1) but parsed as Nothing
+'if b then x = 1 else x = 2' should parse as If (Var "b") (Assign "x" (Const 1)) (Assign "x" (Const 2)) but parsed as Nothing
+'{ x = 1; y = 2}' should parse as Seq [Assign "x" (Const 1),Assign "y" (Const 2)] but parsed as Nothing
+'{ x = 1}' should parse as Seq [Assign "x" (Const 1)] but parsed as Nothing
+'while a do{ a = a-1; b = b + b}' should parse as While (Var "a") (Seq [Assign "a" (Binop Minus (Var "a") (Const 1)),Assign "b" (Binop Plus (Var "b") (Var "b"))]) but parsed as Nothing
+
+*** Failed! Falsified (after 4 tests):
+Binop Times (Const (-3)) (Uminus (Const 1))
+FAIL parse-pretty-inv (exp)
+*** Failed! Exception: 'Maybe.fromJust: Nothing' (after 1 test):
+Seq []
+FAIL parse-pretty-inv (com)
+TOTAL ### 5

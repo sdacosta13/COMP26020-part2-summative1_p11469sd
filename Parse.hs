@@ -31,11 +31,20 @@ parseExp str = do
     then return Nothing
     else return result
 -}
-
+parseExp :: String -> Maybe Exp
+parseExp str = do
+  let str2 = removeInitialWhiteSpace str
+  case parse parseExpression "" str2 of
+    Left x -> Nothing
+    Right x -> Just x
 
 
 parseCom :: String -> Maybe Com
-parseCom s = Nothing   -- replace this line by your solution
+parseCom s = do
+  let str2 = removeInitialWhiteSpace s
+  case parse program "" str2 of
+    Left x -> Nothing
+    Right x -> Just x
 
 languageDef =
   emptyDef { Token.identStart = letter <|> char '_'
@@ -45,7 +54,7 @@ languageDef =
                                     "while",
                                     "do"
                                     ]
-           , Token.reservedOpNames = ["+", "-", "/", "*", "==", "<", "<=", "&&", "||"]
+           , Token.reservedOpNames = ["+", "-", "/", "*", "==", "<", "<=", "&&", "||", "="]
            }
 lexer      = Token.makeTokenParser languageDef
 identifier = Token.identifier lexer
@@ -55,10 +64,11 @@ parens     = Token.parens lexer
 integer    = Token.integer lexer
 semi       = Token.semi lexer
 whitespace = Token.whiteSpace lexer
+symbol = Token.symbol lexer
 
 
 parseExpression :: Parser Exp
-parseExpression = buildExpressionParser ops term -- need to declare ops and term
+parseExpression = buildExpressionParser ops expression
 
 ops = [
   [Prefix (reservedOp "-" >> return (Uminus))],
@@ -75,7 +85,7 @@ binopParser = do
   operand2 <- parseExpression
   return $ Binop operation operand1 operand2
 -}
-term = parens parseExpression <|> liftM Var identifier <|> liftM Const integer
+expression = parens parseExpression <|> liftM Var identifier <|> liftM Const integer
 
 removeInitialWhiteSpace :: String -> String
 removeInitialWhiteSpace (s:xs) | s == ' ' = removeInitialWhiteSpace xs
@@ -83,15 +93,42 @@ removeInitialWhiteSpace (s:xs) | s == '\n' = removeInitialWhiteSpace xs
 removeInitialWhiteSpace (s:xs) | s == '\t' = removeInitialWhiteSpace xs
 removeInitialWhiteSpace x = x
 
-parseExp :: String -> Maybe Exp
-parseExp str = do
-  let str2 = removeInitialWhiteSpace str
-  case parse parseExpression "" str2 of
-    Left x -> Nothing
-    Right x -> Just x
+program :: Parser Com
+program = ifParser <|> whileParser <|> assignParser <|> seqParser
 
+assignParser :: Parser Com
+assignParser = do
+  variable <- identifier
+  reservedOp "="
+  expression <- parseExpression
+  return $ Assign variable expression
 
+whileParser :: Parser Com
+whileParser = do
+  reserved "while"
+  expression <- parseExpression
+  reserved "do"
+  component <- program
+  return $ While expression component
 
+ifParser :: Parser Com
+ifParser = do
+  reserved "if"
+  expression <- parseExpression
+  reserved "then"
+  component1 <- program
+  reserved "else"
+  component2 <- program
+  return $ If expression component1 component2
+
+seqParser :: Parser Com
+seqParser = do
+  symbol "{"
+  list <- (sepBy program semi)
+  symbol "}"
+  if (length list == 0)
+    then return (Seq [])
+    else return (Seq list)
 
 
 

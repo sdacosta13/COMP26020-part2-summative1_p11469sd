@@ -12,82 +12,11 @@ String 'a & & b' should not parse, but was parsed to: Var "a"
 String 'a | | b' should not parse, but was parsed to: Var "a"
 
 OK ### 2 parse simple exp
-FAIL parse simple com
-'{}' should parse as Seq [] but parsed as Nothing
-'{ }' should parse as Seq [] but parsed as Nothing
-'x=1' should parse as Assign "x" (Const 1) but parsed as Nothing
-'if b then x=1 else x=2' should parse as If (Var "b") (Assign "x" (Const 1)) (Assign "x" (Const 2)) but parsed as Nothing
-'{ x=1; y=2 }' should parse as Seq [Assign "x" (Const 1),Assign "y" (Const 2)] but parsed as Nothing
-'{ x=1 }' should parse as Seq [Assign "x" (Const 1)] but parsed as Nothing
-'while a do {a=a-1; b=b+b}' should parse as While (Var "a") (Seq [Assign "a" (Binop Minus (Var "a") (Const 1)),Assign "b" (Binop Plus (Var "b") (Var "b"))]) but parsed as Nothing
-'{ }' should parse as Seq [] but parsed as Nothing
-'{ }' should parse as Seq [] but parsed as Nothing
-'x = 1' should parse as Assign "x" (Const 1) but parsed as Nothing
-'if b then x = 1 else x = 2' should parse as If (Var "b") (Assign "x" (Const 1)) (Assign "x" (Const 2)) but parsed as Nothing
-'{ x = 1 ; y = 2 }' should parse as Seq [Assign "x" (Const 1),Assign "y" (Const 2)] but parsed as Nothing
-'{ x = 1 }' should parse as Seq [Assign "x" (Const 1)] but parsed as Nothing
-'while a do { a = a -1 ; b = b + b }' should parse as While (Var "a") (Seq [Assign "a" (Binop Minus (Var "a") (Const 1)),Assign "b" (Binop Plus (Var "b") (Var "b"))]) but parsed as Nothing
-' 
- 
- {}
-
-   
-' should parse as Seq [] but parsed as Nothing
-' 
- 
- { }
-
-   
-' should parse as Seq [] but parsed as Nothing
-' 
- 
- x=1
-
-   
-' should parse as Assign "x" (Const 1) but parsed as Nothing
-' 
- 
- if b then x=1 else x=2
-
-   
-' should parse as If (Var "b") (Assign "x" (Const 1)) (Assign "x" (Const 2)) but parsed as Nothing
-' 
- 
- { x=1; y=2 }
-
-   
-' should parse as Seq [Assign "x" (Const 1),Assign "y" (Const 2)] but parsed as Nothing
-' 
- 
- { x=1 }
-
-   
-' should parse as Seq [Assign "x" (Const 1)] but parsed as Nothing
-' 
- 
- while a do {a=a-1; b=b+b}
-
-   
-' should parse as While (Var "a") (Seq [Assign "a" (Binop Minus (Var "a") (Const 1)),Assign "b" (Binop Plus (Var "b") (Var "b"))]) but parsed as Nothing
-'{   }' should parse as Seq [] but parsed as Nothing
-'{   }' should parse as Seq [] but parsed as Nothing
-'x   =   1' should parse as Assign "x" (Const 1) but parsed as Nothing
-'if   b   then   x   =   1   else   x   =   2' should parse as If (Var "b") (Assign "x" (Const 1)) (Assign "x" (Const 2)) but parsed as Nothing
-'{   x   =   1   ;   y   =   2   }' should parse as Seq [Assign "x" (Const 1),Assign "y" (Const 2)] but parsed as Nothing
-'{   x   =   1   }' should parse as Seq [Assign "x" (Const 1)] but parsed as Nothing
-'while   a   do   {   a   =   a   -1   ;   b   =   b   +   b   }' should parse as While (Var "a") (Seq [Assign "a" (Binop Minus (Var "a") (Const 1)),Assign "b" (Binop Plus (Var "b") (Var "b"))]) but parsed as Nothing
-'{}' should parse as Seq [] but parsed as Nothing
-'{}' should parse as Seq [] but parsed as Nothing
-'x = 1' should parse as Assign "x" (Const 1) but parsed as Nothing
-'if b then x = 1 else x = 2' should parse as If (Var "b") (Assign "x" (Const 1)) (Assign "x" (Const 2)) but parsed as Nothing
-'{ x = 1; y = 2}' should parse as Seq [Assign "x" (Const 1),Assign "y" (Const 2)] but parsed as Nothing
-'{ x = 1}' should parse as Seq [Assign "x" (Const 1)] but parsed as Nothing
-'while a do{ a = a-1; b = b + b}' should parse as While (Var "a") (Seq [Assign "a" (Binop Minus (Var "a") (Const 1)),Assign "b" (Binop Plus (Var "b") (Var "b"))]) but parsed as Nothing
-
-*** Failed! Exception: 'Maybe.fromJust: Nothing' (after 3 tests):
-Uminus (Binop And (Var "z") (Const (-1)))
+OK ### 1 parse simple com
+*** Failed! Falsified (after 4 tests):
+Const (-1)
 FAIL parse-pretty-inv (exp)
-*** Failed! Exception: 'Maybe.fromJust: Nothing' (after 1 test):
-Seq []
+*** Failed! Exception: 'Maybe.fromJust: Nothing' (after 3 tests):
+If (Const 0) (Assign "y" (Binop Plus (Binop Minus (Const (-2)) (Const 0)) (Var "b"))) (Seq [])
 FAIL parse-pretty-inv (com)
-TOTAL ### 5
+TOTAL ### 6
