@@ -64,8 +64,8 @@ main vrb = do
   r1 <- test1 vrb
   r2 <- test2 vrb
   r3 <- test3 vrb
-  --r4 <- test4 vrb
-  return (max 0 (r1+r2+r3))
+  r4 <- test4 vrb
+  return (max 0 (r1+r2+r3+r4))
 
 
 {- Auxiliary functions -}
@@ -85,3 +85,4 @@ norm1 = norm_tks . map spc where
 
 -- Normalize spacing in between tokens, keep indentation
 norm2 = gen_norm (norm_line_indent norm_tks)
+
